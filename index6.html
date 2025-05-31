@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat bareng Seo Nari 🩷</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #ffe4f0, #fbeaff);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 1.2rem 1rem 0.5rem;
+      color: #ff69b4;
+      font-size: 2.2rem;
+      text-shadow: 1px 1px 2px #ffc0cb70;
+    }
+
+    #chatbox {
+      flex: 1;
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+      background: #fff0fa;
+      border-radius: 18px;
+      padding: 1rem;
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .bubble {
+      background: #ffdbf4;
+      padding: 10px 14px;
+      border-radius: 14px;
+      max-width: 80%;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .user {
+      background: #d9f3ff;
+      align-self: flex-end;
+    }
+
+    .bot {
+      background: #ffe2f7;
+      align-self: flex-start;
+    }
+
+    #inputArea {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid #ffb6c1;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #ff69b4;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s;
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Scrollbar styling */
+    #chatbox::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #chatbox::-webkit-scrollbar-thumb {
+      background-color: #ffcce5;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>૮₍ ´• ˕ •` ₎ა Hai! Aku Seo Nari 🩷</h1>
+  <div id="chatbox"></div>
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Ketik sesuatu untuk Nari... (˶ᵔ ᵕ ᵔ˶)">
+    <button onclick="sendMessage()">Kirim</button>
+  </div>
+
+  <script>
+    const username = "Kakakku yang manis ✨";
+    const chatbox = document.getElementById("chatbox");
+
+    function appendMessage(content, sender) {
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble", sender);
+      bubble.innerText = content;
+      chatbox.appendChild(bubble);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage(`${message}`, "user");
+      input.value = "";
+
+      try {
+        const res = await fetch(`https://api.botcahx.eu.org/api/gpt-v2?text=${encodeURIComponent(message)}&name=${encodeURIComponent(username)}&key=Itzmeexgantengg`);
+        const data = await res.json();
+        let reply = data.result;
+
+        reply = `Hai ${username} ✨! ${reply}\n\n૮₍ ˃⤙ ˂ ₎ა`;
+
+        appendMessage(reply, "bot");
+      } catch (err) {
+        appendMessage("Oops... Nari gagal konek ke server ( ꩜ ᯅ ꩜;) coba lagi yaaa~", "bot");
+      }
+    }
+
+    document.getElementById("userInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
